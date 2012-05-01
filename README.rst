@@ -1,0 +1,1 @@
+Sublime Text 2 plugin to perform code coverage analysis and highlight uncovered lines. (Work in progress.)
