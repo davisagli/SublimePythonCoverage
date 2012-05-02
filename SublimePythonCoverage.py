@@ -1,7 +1,5 @@
-from subprocess import Popen, PIPE
 import os
 import sublime, sublime_plugin
-import sys
 
 from coverage import coverage
 
@@ -18,7 +16,6 @@ def find(base, rel, access=os.R_OK):
         base = os.path.dirname(base)
         if not base or base == '/':
             return
-
 
 def find_cmd(base, cmd):
     return find(base, ('bin', cmd), os.X_OK)
@@ -93,7 +90,6 @@ class NoseExecCommand(ExecCommand):
     def run(self, **kw):
         if 'cmd' not in kw:
             fname = self.window.active_view().file_name()
-            dirname = os.path.dirname(fname)
 
             # look for a virtualenv with nosetests
             nose = find_cmd(fname, 'nosetests')
