@@ -1,6 +1,5 @@
 {
 	"target": "nose_exec",
-	"cmd": ["python", "/Users/davidg/Library/Application Support/Sublime Text 2/Packages/Coverage/SublimeCoverage/nose_runner.py", "$file"],
 	"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
 	"selector": "source.python"
 }
