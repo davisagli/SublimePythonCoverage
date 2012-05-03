@@ -44,7 +44,7 @@ Running tests with coverage
 
 If you run your tests using the
 `nose <http://readthedocs.org/docs/nose/en/latest/>`_ test runner,
-SublimePythonCoverage also comes with a _build system_
+SublimePythonCoverage also comes with a *build system*
 to help produce coverage information.
 
 Set your build system to ``Python Nose with Coverage``.
