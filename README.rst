@@ -6,14 +6,13 @@ based on the output of Ned Batchelder's
 Installation
 ------------
 
-Set up
-`Sublime Package Control <http://wbond.net/sublime_packages/package_control>`_
-if you don't have it yet.
+Use git to check out ``SublimePythonCoverage``
+into your Sublime Text 2 ``Packages`` directory.
 
-Go to Tools > Command Palette.
-Type ``Package Control: Install Package`` and hit enter.
-Type ``SublimePythonCoverage`` and hit enter.
-It may take a bit to install as it needs to fetch its dependency, coverage.py.
+On OS X::
+
+  $ cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages
+  $ git clone git://github.com/davisagli/SublimePythonCoverage.git
 
 
 Usage
