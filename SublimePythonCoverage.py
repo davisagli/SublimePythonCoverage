@@ -111,10 +111,3 @@ class NoseExecCommand(ExecCommand):
         super(NoseExecCommand, self).finish(proc)
         for view in self.window.views():
             view.run_command('show_python_coverage')
-
-
-# TODO:
-# - install coverage egg via helper script
-# - instructions on installation
-# - documentation
-# - test coverage!
