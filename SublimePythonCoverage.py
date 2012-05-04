@@ -28,7 +28,8 @@ if not os.path.exists(os.path.join(os.getcwd(), 'coverage')):
 # end bootstrap
 
 
-import sublime, sublime_plugin
+import sublime
+import sublime_plugin
 from coverage import coverage
 PLUGIN_FILE = os.path.abspath(__file__)
 
@@ -43,6 +44,7 @@ def find(base, rel, access=os.R_OK):
         base = os.path.dirname(base)
         if not base or base == '/':
             return
+
 
 def find_cmd(base, cmd):
     return find(base, ('bin', cmd), os.X_OK)
@@ -101,13 +103,15 @@ class ShowPythonCoverageCommand(sublime_plugin.TextCommand):
 
         # update highlighted regions
         view.erase_regions('SublimePythonCoverage')
-        view.add_regions('SublimePythonCoverage', outlines, 'comment', 
+        view.add_regions('SublimePythonCoverage', outlines, 'comment',
             sublime.DRAW_EMPTY | sublime.DRAW_OUTLINED)
 
 
 # manually import the module containing ST2's default build command,
 # since it's in a module whose name is a Python keyword :-s
 ExecCommand = __import__('exec').ExecCommand
+
+
 class NoseExecCommand(ExecCommand):
     """An extension of the default build system which shows coverage at the end.
 
