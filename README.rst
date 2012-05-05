@@ -39,26 +39,32 @@ Running tests with coverage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you run your tests using the
-`nose <http://readthedocs.org/docs/nose/en/latest/>`_ test runner,
-SublimePythonCoverage also comes with a *build system*
+`nose <http://readthedocs.org/docs/nose/en/latest/>`_ or
+`pytest <http://pytest.org/>`_ test runners,
+SublimePythonCoverage also comes with matching *build systems*
 to help produce coverage information.
 
-Set your build system to ``Python Nose with Coverage``.
+Set your build system to either ``Python Nose with Coverage``
+or ``Python pytest with Coverage``.
 
 Now when you trigger a build in Sublime Text 2,
-it will run ``nosetests --with-coverage`` to generate
-coverage data, and then update the highlighted lines.
+it will run ``nosetests --with-coverage`` or ``py.test` to generate
+coverage data, and then update the highlighted lines.  In the
+latter case, your `setup.cfg` or `pytest.ini` is expected to
+provide the options necessary to test your package and generate
+coverage information.
 
 SublimePythonCoverage uses a simple heuristic
-to guess the right ``nosetests`` script to run.
-First it looks in all parent directories for ``bin/nosetests``.
-If that fails, it tries to find nosetests in the PATH.
+to guess the right ``nosetests``/``py.test`` script to run.
+First it looks in all parent directories for ``bin/nosetests``/``bin/py.test``.
+If that fails, it tries to find ``nosetests``/``py.test`` in the PATH.
 
 SublimePythonCoverage uses another heuristic
-to guess what path to pass to nosetests.
+to guess what path to pass to ``nosetests``.
 If the directory of the current file is not a package,
 (i.e., does not contain an ``__init__.py``),
-it runs nosetests on the current file.
+it runs ``nosetests`` on the current file.  This does not work for ``py.test``.
+
 Otherwise, it looks in all parent directories for ``setup.py``,
-and if it finds it it runs nosetests on that directory.
-If not, it runs nosetests on the directory of the current file.
+and if it finds it it starts the test runner on that directory.
+If not, it runs the tests on the directory of the current file.

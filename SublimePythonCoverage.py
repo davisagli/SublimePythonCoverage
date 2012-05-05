@@ -28,7 +28,8 @@ if not os.path.exists(os.path.join(os.getcwd(), 'coverage')):
 # end bootstrap
 
 
-import sublime, sublime_plugin
+import sublime
+import sublime_plugin
 from coverage import coverage
 PLUGIN_FILE = os.path.abspath(__file__)
 
@@ -43,6 +44,7 @@ def find(base, rel, access=os.R_OK):
         base = os.path.dirname(base)
         if not base or base == '/':
             return
+
 
 def find_cmd(base, cmd):
     return find(base, ('bin', cmd), os.X_OK)
@@ -101,28 +103,32 @@ class ShowPythonCoverageCommand(sublime_plugin.TextCommand):
 
         # update highlighted regions
         view.erase_regions('SublimePythonCoverage')
-        view.add_regions('SublimePythonCoverage', outlines, 'comment', 
+        view.add_regions('SublimePythonCoverage', outlines, 'comment',
             sublime.DRAW_EMPTY | sublime.DRAW_OUTLINED)
 
 
 # manually import the module containing ST2's default build command,
 # since it's in a module whose name is a Python keyword :-s
 ExecCommand = __import__('exec').ExecCommand
-class NoseExecCommand(ExecCommand):
-    """An extension of the default build system which shows coverage at the end.
 
-    Used by the Python Nose build system.
-    """
+
+class TestExecCommand(ExecCommand):
+    """An generic extension of the default build system which shows coverage at the end."""
+
+    runner = None
+
+    def cmd(self, runner, testpath):
+        NotImplemented
 
     def run(self, **kw):
         if 'cmd' not in kw:
             fname = self.window.active_view().file_name()
 
-            # look for a virtualenv with nosetests
-            nose = find_cmd(fname, 'nosetests')
-            if nose is None:
+            # look for a virtualenv with nosetests, py.test etc
+            runner = find_cmd(fname, self.runner)
+            if runner is None:
                 # no virtualenv; maybe there's a global one
-                nose = 'nosetests'
+                runner = self.runner
 
             testpath = find_tests(fname)
             if os.path.isdir(testpath):
@@ -130,11 +136,31 @@ class NoseExecCommand(ExecCommand):
             else:
                 kw['working_dir'] = os.path.dirname(testpath)
 
-            kw['cmd'] = [nose, '--with-coverage', testpath]
+            kw['cmd'] = self.cmd(runner, testpath)
 
-        super(NoseExecCommand, self).run(**kw)
+        super(TestExecCommand, self).run(**kw)
 
     def finish(self, proc):
-        super(NoseExecCommand, self).finish(proc)
+        super(TestExecCommand, self).finish(proc)
         for view in self.window.views():
             view.run_command('show_python_coverage')
+
+
+class NoseExecCommand(TestExecCommand):
+    """An extension of the default build system using the Python Nose test
+       runner to generate coverage information."""
+
+    runner = 'nosetests'
+
+    def cmd(self, runner, testpath):
+        return [runner, '--with-coverage', testpath]
+
+
+class PytestExecCommand(TestExecCommand):
+    """An extension of the default build system using the py.test test
+       runner to generate coverage information."""
+
+    runner = 'py.test'
+
+    def cmd(self, runner, testpath):
+        return [runner]
