@@ -48,7 +48,7 @@ Set your build system to either ``Python Nose with Coverage``
 or ``Python pytest with Coverage``.
 
 Now when you trigger a build in Sublime Text 2,
-it will run ``nosetests --with-coverage`` or ``py.test` to generate
+it will run ``nosetests --with-coverage`` or ``py.test`` to generate
 coverage data, and then update the highlighted lines.  In the
 latter case, your `setup.cfg` or `pytest.ini` is expected to
 provide the options necessary to test your package and generate
