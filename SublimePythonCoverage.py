@@ -10,8 +10,8 @@ if not os.path.exists(os.path.join(os.getcwd(), 'coverage')):
     import urllib
     from hashlib import md5
 
-    SOURCE = 'http://pypi.python.org/packages/source/c/coverage/coverage-3.5.1.tar.gz'
-    MD5SUM = '410d4c8155a4dab222f2bc51212d4a24'
+    SOURCE = 'http://pypi.python.org/packages/source/c/coverage/coverage-3.5.2.tar.gz'
+    MD5SUM = '28c43d41b13f8987ea14d7b1d4a4e3ec'
 
     payload = urllib.urlopen(SOURCE).read()
     if md5(payload).hexdigest() != MD5SUM:
@@ -19,7 +19,7 @@ if not os.path.exists(os.path.join(os.getcwd(), 'coverage')):
 
     tar = tarfile.open(mode='r:gz', fileobj=StringIO(payload))
     for m in tar.getmembers():
-        if not m.name.startswith('coverage-3.5.1/coverage/'):
+        if not m.name.startswith('coverage-3.5.2/coverage/'):
             continue
         m.name = '/'.join(m.name.split('/')[2:])
         tar.extract(m, 'coverage')
