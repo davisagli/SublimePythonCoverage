@@ -31,6 +31,7 @@ if not os.path.exists(os.path.join(plugin_path, 'coverage')):
 import sublime
 import sublime_plugin
 from coverage import coverage
+from coverage.files import FnmatchMatcher
 PLUGIN_FILE = os.path.abspath(__file__)
 
 
@@ -92,19 +93,22 @@ class ShowPythonCoverageCommand(sublime_plugin.TextCommand):
 
         # run analysis and find uncovered lines
         cov = coverage(data_file=cov_file)
-        cov_dir = os.path.dirname(cov_file)
-        os.chdir(cov_dir)
-        relpath = os.path.relpath(fname, cov_dir)
-        cov.load()
-        f, s, excluded, missing, m = cov.analysis2(relpath)
         outlines = []
-        for line in missing:
-            outlines.append(view.full_line(view.text_point(line - 1, 0)))
+        omit_matcher = FnmatchMatcher(cov.omit)
+        if not omit_matcher.match(fname):
+            cov_dir = os.path.dirname(cov_file)
+            os.chdir(cov_dir)
+            relpath = os.path.relpath(fname, cov_dir)
+            cov.load()
+            f, s, excluded, missing, m = cov.analysis2(relpath)
+            for line in missing:
+                outlines.append(view.full_line(view.text_point(line - 1, 0)))
 
         # update highlighted regions
         view.erase_regions('SublimePythonCoverage')
-        view.add_regions('SublimePythonCoverage', outlines, 'comment',
-            sublime.DRAW_EMPTY | sublime.DRAW_OUTLINED)
+        if outlines:
+            view.add_regions('SublimePythonCoverage', outlines, 'comment',
+                sublime.DRAW_EMPTY | sublime.DRAW_OUTLINED)
 
 
 # manually import the module containing ST2's default build command,
