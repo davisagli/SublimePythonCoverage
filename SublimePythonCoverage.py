@@ -1,7 +1,7 @@
 # bootstrap
 import os
-os.chdir(os.path.dirname(__file__))
-if not os.path.exists(os.path.join(os.getcwd(), 'coverage')):
+plugin_path = os.path.dirname(__file__)
+if not os.path.exists(os.path.join(plugin_path, 'coverage')):
     # Fetch coverage.py
     print 'SublimePythonCoverage installing coverage.py.'
 
@@ -22,7 +22,7 @@ if not os.path.exists(os.path.join(os.getcwd(), 'coverage')):
         if not m.name.startswith('coverage-3.5.1/coverage/'):
             continue
         m.name = '/'.join(m.name.split('/')[2:])
-        tar.extract(m, 'coverage')
+        tar.extract(m, os.path.join(plugin_path, 'coverage'))
 
     print 'SublimePythonCoverage successfully installed coverage.py.'
 # end bootstrap
