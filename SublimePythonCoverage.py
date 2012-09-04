@@ -42,8 +42,9 @@ def find(base, rel, access=os.R_OK):
         path = os.path.join(base, rel)
         if os.access(path, access):
             return path
+        baseprev = base
         base = os.path.dirname(base)
-        if not base or base == '/':
+        if not base or base == baseprev:
             return
 
 
