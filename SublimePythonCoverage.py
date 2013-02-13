@@ -108,9 +108,8 @@ class ShowPythonCoverageCommand(sublime_plugin.TextCommand):
         # update highlighted regions
         view.erase_regions('SublimePythonCoverage')
         if outlines:
-            view.add_regions('SublimePythonCoverage', outlines, 'comment',
-                sublime.DRAW_EMPTY | sublime.DRAW_OUTLINED)
-
+            view.add_regions('SublimePythonCoverage', outlines,
+                             'markup.inserted', 'bookmark', sublime.HIDDEN)
 
 # manually import the module containing ST2's default build command,
 # since it's in a module whose name is a Python keyword :-s
