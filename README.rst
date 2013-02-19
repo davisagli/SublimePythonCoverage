@@ -23,7 +23,7 @@ Highlighting lines missing coverage
 
 When you open a .py file,
 SublimePythonCoverage tries to find coverage information
-and highlight all uncovered lines with an outline.
+and mark all uncovered lines with a symbol in the gutter.
 
 It does this by looking in all parent directories
 until it finds a ``.coverage`` file as produced by ``coverage.py``.
